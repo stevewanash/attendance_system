@@ -280,46 +280,44 @@ class actions:
         to prompt for user input until the user chooses to quit. 
         The function handles various user inputs.
         """
+        try:
+            while True:
+                prompt.enter_program()
 
-        if not os.path.isfile('register.txt'):
-            file_methods.create_file('register.txt')
+                if entry_choice == 'q':
+                    break
+                if entry_choice == 'a':
+                    prompt.add_student()
+                elif entry_choice == 'd':
+                    prompt.del_student()
+                elif entry_choice == 'f':
+                    data_methods.display()
+                elif entry_choice == 'r':
+                    file_methods.read_update_files()
+                else:
+                    print("Invalid input, try again")
+
+            print('You have successfully left the program')
+        
+        except FileNotFoundError:
+            if not os.path.isfile('register.txt'):
+                file_methods.create_file('register.txt')
+
+            if not os.path.isfile('attended.txt'):
+                file_methods.create_file('attended.txt')
+                initialized_total_attended = data_methods.create_dictionary()
+                file_methods.append_file('attended.txt', str(initialized_total_attended))
+
+            if not os.path.isfile('classes.txt'):
+                file_methods.create_file('classes.txt')
+                file_methods.append_file('classes.txt', str(0))
+
+            if not os.path.isfile('percentage.txt'):
+                file_methods.create_file('percentage.txt')
+                initialized_percentage = data_methods.create_dictionary()
+                file_methods.append_file('percentage.txt', str(initialized_percentage))
+
+            print("One or more system files were not found. They have all been created with no data in them. You may now use the program, add students first using option 'a' to continue.")
             return actions.code_runner()
-
-        if not os.path.isfile('attended.txt'):
-            file_methods.create_file('attended.txt')
-            initialized_total_attended = data_methods.create_dictionary()
-            file_methods.append_file('attended.txt', str(initialized_total_attended))
-            return actions.code_runner()
-
-        if not os.path.isfile('classes.txt'):
-            file_methods.create_file('classes.txt')
-            file_methods.append_file('classes.txt', str(0))
-            return actions.code_runner()
-
-        if not os.path.isfile('percentage.txt'):
-            file_methods.create_file('percentage.txt')
-            initialized_percentage = data_methods.create_dictionary()
-            file_methods.append_file('percentage.txt', str(initialized_percentage))
-            return actions.code_runner()
-
-        while True:
-            prompt.enter_program()
-
-            if entry_choice == 'q':
-                break
-            if entry_choice == 'a':
-                prompt.add_student()
-            elif entry_choice == 'd':
-                prompt.del_student()
-            elif entry_choice == 'f':
-                data_methods.display()
-            elif entry_choice == 'r':
-                file_methods.read_update_files()
-            else:
-                print("Invalid input, try again")
-
-        print('You have successfully left the program')
-
-
 
 actions.code_runner()
