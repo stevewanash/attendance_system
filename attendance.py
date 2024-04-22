@@ -63,7 +63,6 @@ class calculation:
             student_name (str): The name of the student for whom the percentage attendance is to be calculated.
             total_classes (int): The total number of classes taught.
         """
-        
         percentage_dict[student_name.strip()] = round((attendance_dict[student_name.strip()]/total_classes)*100, 2)
 
 
@@ -94,14 +93,14 @@ class file_methods:
         student_total_attended = {}
         attendance_percentage = {}
         
-        with open('attended.txt', 'r', encoding='utf-8') as attended_file, open('classes.txt', 'r', encoding='utf-8') as classes_file, open('percentage.txt', 'r', encoding='utf-8') as percentage_file:
+        with open('attended.txt', 'r+', encoding='utf-8') as attended_file, open('classes.txt', 'r+', encoding='utf-8') as classes_file, open('percentage.txt', 'r+', encoding='utf-8') as percentage_file, open('register.txt', 'r', encoding='utf-8') as register_file:
             student_total_attended = eval(attended_file.read())
             attendance_percentage = eval(percentage_file.read())
             total_classes = eval(classes_file.read())
 
-        with open('attended.txt', 'w', encoding='utf-8') as attended_file, open('classes.txt', 'w', encoding='utf-8') as classes_file, open('percentage.txt', 'w', encoding='utf-8') as percentage_file, open('register.txt', 'r', encoding='utf-8') as register_file:
             total_classes += 1
             print("mark 'p' if present, and 'a' if absent")
+
             while True:
                 count += 1
                 student_name = register_file.readline()
@@ -111,6 +110,10 @@ class file_methods:
                 calculation.classes_attended(student_total_attended, student_name)
                 calculation.percentage_calc(attendance_percentage, student_total_attended, student_name, total_classes)
 
+            for file in [attended_file, classes_file, percentage_file]:
+                file.seek(0)
+                file.truncate(0)
+            
             attended_file.write(str(student_total_attended))
             classes_file.write(str(total_classes))
             percentage_file.write(str(attendance_percentage))
