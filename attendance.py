@@ -204,12 +204,11 @@ class data_methods:
         """
 
         read_content = {}
-        with open(file_name, 'r', encoding = 'utf-8') as file:
+        with open(file_name, 'r+', encoding = 'utf-8') as file:
             read_content = eval(file.read())
-
-        read_content[text] = 0
-
-        with open(file_name, 'w', encoding = 'utf-8') as file:
+            read_content[text] = 0
+            file.seek(0)
+            file.truncate(0)
             file.write(str(read_content))
 
     def add_everywhere(student_to_add):
