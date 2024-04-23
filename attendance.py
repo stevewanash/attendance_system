@@ -145,10 +145,10 @@ class file_methods:
         """
 
         delete_status = False
-        with open(file_name, 'r', encoding = 'utf-8') as file:
+        with open(file_name, 'r+', encoding = 'utf-8') as file:
             student_names = file.readlines()
-
-        with open(file_name, 'w', encoding = 'utf-8') as file:
+            file.seek(0)
+            file.truncate(0)
             for name in student_names:
                 if student_names.index(name) == len(student_names) - 2 and name.strip('\n') != text and delete_status == False:
                     file.write(name.strip('\n'))
@@ -187,12 +187,11 @@ class data_methods:
         """
 
         read_content = {}
-        with open(file_name, 'r', encoding = 'utf-8') as file:
+        with open(file_name, 'r+', encoding = 'utf-8') as file:
             read_content = eval(file.read())
-
-        del read_content[text]
-
-        with open(file_name, 'w', encoding = 'utf-8') as file:
+            del read_content[text]
+            file.seek(0)
+            file.truncate(0)
             file.write(str(read_content))
 
     def add_to_dict(file_name = '', text = ''):
